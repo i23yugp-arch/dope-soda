@@ -35,13 +35,48 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="portal-shell">
       <aside className="dashboard-sidebar">
-        <div style={{ padding: '32px 28px 28px', borderBottom: '1px solid rgba(124, 92, 191, 0.16)' }}>
-          <div className="brand-mark" style={{ fontSize: '2.25rem' }}>
+        <div style={{
+        padding: '0 28px 32px',
+        borderBottom: '1px solid rgba(255,255,255,0.08)'
+        }}>
+        <a href="/" style={{ textDecoration: 'none' }}>
+            <div style={{
+            fontSize: '2rem',
+            fontWeight: 900,
+            color: '#b794f4',
+            letterSpacing: '0.1em',
+            transition: 'color 0.2s'
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#e8c5ff')}
+            onMouseLeave={e => (e.currentTarget.style.color = '#b794f4')}
+            >
             DOPE
-          </div>
-          <div className="eyebrow" style={{ marginTop: '8px', color: 'rgba(232, 224, 245, 0.48)' }}>
+            </div>
+        </a>
+        <div style={{
+            fontSize: '0.6rem',
+            color: 'rgba(255,255,255,0.3)',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            marginTop: '4px'
+        }}>
             Partner Portal
-          </div>
+        </div>
+        <a href="/" style={{
+            display: 'inline-block',
+            marginTop: '8px',
+            fontSize: '0.65rem',
+            color: 'rgba(183,148,244,0.5)',
+            textDecoration: 'none',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            transition: 'color 0.2s'
+        }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#b794f4')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(183,148,244,0.5)')}
+        >
+            ← Back to Website
+        </a>
         </div>
 
         <div

@@ -640,7 +640,7 @@ export default function HomePage() {
         <h2 className="section-title fade-up">SMALL TEAM.<br />MASSIVE VISION.</h2>
         <div className="team-photo-banner fade-up">
           <img
-            src="/images/team.jpeg"
+            src="/images/team.jpg"
             alt="DOPE team"
             style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center 20%' }}
           />
@@ -648,12 +648,30 @@ export default function HomePage() {
         </div>
         <div className="team-grid">
           {[
-            { initials:'YP', name:'Yug Patil',        role:'Founder & CEO',        bio:"Beat Bolt. Built DOPE. Yug spent years in the fitness industry watching the same six brands fill every fridge. He decided the empty quadrant needed an owner — so he became one." },
-            { initials:'AB', name:'Anshul Bhalsakle', role:'Head of Formulation',   bio:"The scientist behind Arctic Rush. Anshul spent three years and 40+ formula iterations building a protein soda that actually tastes like a soda. No chalk. No compromise." },
-            { initials:'YA', name:'Yash Anup',        role:'VP of Sales & Finance', bio:"The dealmaker. Yash brings the network and the numbers — building wholesale partnerships and making sure DOPE's margins are as clean as its label." },
+            { initials:'YP', name:'Yug Patil',        img: "/images/yug.jpg", role:'Founder & CEO',        bio:"Beat Bolt. Built DOPE. Yug spent years in the fitness industry watching the same six brands fill every fridge. He decided the empty quadrant needed an owner — so he became one." },
+            { initials:'AB', name:'Anshul Bhalsakle', img: "/images/anshul.jpeg", role:'Head of Formulation',   bio:"The scientist behind Arctic Rush. Anshul spent three years and 40+ formula iterations building a protein soda that actually tastes like a soda. No chalk. No compromise." },
+            { initials:'YA', name:'Yash Anup',        img: "/images/yash.jpeg", role:'VP of Sales & Finance', bio:"The dealmaker. Yash brings the network and the numbers — building wholesale partnerships and making sure DOPE's margins are as clean as its label." },
           ].map(m => (
             <div className="team-card fade-up" key={m.initials}>
-              <div className="team-avatar">{m.initials}</div>
+              <div style={{ width:'70px', height:'70px', borderRadius:'50%', overflow:'hidden', marginBottom:'20px', border:'2px solid rgba(124,92,191,.3)', flexShrink:0 }}>
+                <img
+                  src={m.img}
+                  alt={m.name}
+                  style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top' }}
+                  onError={(e) => {
+                    const target = e.currentTarget
+                    target.style.display = 'none'
+                    if (target.parentElement) {
+                      target.parentElement.style.background = '#1a1033'
+                      target.parentElement.style.display = 'flex'
+                      target.parentElement.style.alignItems = 'center'
+                      target.parentElement.style.justifyContent = 'center'
+                      target.parentElement.innerHTML = `<span style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#b794f4">${m.initials}</span>`
+                    }
+                  }}
+                />
+              </div>
+
               <div className="team-name">{m.name}</div>
               <div className="team-role">{m.role}</div>
               <div className="team-bio">{m.bio}</div>
