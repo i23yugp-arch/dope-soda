@@ -17,7 +17,7 @@ export default function LoginPage() {
     setError('')
 
     const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
       setError('Incorrect email or password. Please try again.')
@@ -25,7 +25,8 @@ export default function LoginPage() {
       return
     }
 
-    router.push('/dashboard')
+    const destination = data.user?.app_metadata?.is_admin === true ? '/admin' : '/dashboard'
+    router.push(destination)
   }
 
   return (

@@ -13,40 +13,38 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          )
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({ request })
-          cookiesToSet.forEach(({ name, value, options }) =>
+          cookiesToSet.forEach(({ name, value, options }) => {
             supabaseResponse.cookies.set(name, value, options)
-          )
+          })
         },
       },
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
   const { pathname } = request.nextUrl
 
-  // ── /dashboard — must be logged in ──
   if (!user && pathname.startsWith('/dashboard')) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // ── /admin — must be logged in AND have is_admin in app_metadata ──
   if (pathname.startsWith('/admin')) {
     if (!user) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
+
     if (user.app_metadata?.is_admin !== true) {
-      // Not an admin — send them away silently
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
   }
 
-  // ── Already logged in — skip auth pages ──
   if (user && (pathname === '/login' || pathname === '/signup')) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    const destination = user.app_metadata?.is_admin === true ? '/admin' : '/dashboard'
+    return NextResponse.redirect(new URL(destination, request.url))
   }
 
   return supabaseResponse
