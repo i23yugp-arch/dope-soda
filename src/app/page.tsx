@@ -261,7 +261,7 @@ export default function HomePage() {
         <div className="hero-bg" />
         <div className="hero-grid" />
         <div className="hero-left">
-          <div className="hero-tag">New Category — Zero Competition</div>
+          {/* <div className="hero-tag">New Category — Zero Competition</div> */}
           <h1 className="hero-h1">
             <div>HAVE</div>
             <div className="line-purple">LIMITS?</div>
