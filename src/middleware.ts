@@ -26,17 +26,26 @@ export async function middleware(request: NextRequest) {
   )
 
   const { data: { user } } = await supabase.auth.getUser()
+  const { pathname } = request.nextUrl
 
-  // Redirect to login if trying to access dashboard without being logged in
-  if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
+  // ── /dashboard — must be logged in ──
+  if (!user && pathname.startsWith('/dashboard')) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // Redirect to dashboard if already logged in and visiting login/signup
-  if (user && (
-    request.nextUrl.pathname === '/login' ||
-    request.nextUrl.pathname === '/signup'
-  )) {
+  // ── /admin — must be logged in AND have is_admin in app_metadata ──
+  if (pathname.startsWith('/admin')) {
+    if (!user) {
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
+    if (user.app_metadata?.is_admin !== true) {
+      // Not an admin — send them away silently
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
+  }
+
+  // ── Already logged in — skip auth pages ──
+  if (user && (pathname === '/login' || pathname === '/signup')) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
@@ -44,5 +53,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/login', '/signup']
+  matcher: ['/dashboard/:path*', '/admin/:path*', '/login', '/signup'],
 }
